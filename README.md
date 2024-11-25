@@ -468,8 +468,8 @@ While (cursor.hasNext()) {
 }
 ````
 #### d. List all the employees who work in the Sales department and have a salary
+#### greater than 50000:
 ````
-greater than 50000:
 Db.employee.find({ department_id: 101, salary: { $gt: 50000 } })
 ````
 ## Slip 4
@@ -1009,8 +1009,8 @@ Slip 7
 Db.customer.find({ “first_name”: /^S/i }, { “_id”: 0, “first_name”: 1, “last_name”: 1 })
 ````
 #### b. List all customers who have opened an account on 1/1/2020 in the “Main”
+#### branch:
 ````
-branch:
 Db.customer.find({ “accounts.open_date”: “2020-01-01”, “accounts.branch”: “Main” }, {
 “_id”: 0, “first_name”: 1, “last_name”: 1 })
 ````
@@ -1452,11 +1452,14 @@ information from the server
 Db.product.find({})
 ````
 #### b. List the details of orders with a value >20000:
+````
+````
 #### c. List all the orders which have not been processed (invoice not generated):
 ````
 Db.order.find({ “processed”: false })
 ````
 #### d. List all the orders along with their invoice for “Mr. Rajiv”:
+````
 Db.order.aggregate([
  { $match: { “customer_id”: 203 } },
  { $lookup: { from: “invoice”, localField: “order_id”, foreignField: “order_id”, as:
@@ -1465,8 +1468,10 @@ Db.order.aggregate([
  { $project: { “order_id”: 1, “order_value”: 1, “invoice_info.invoice_id”: 1,
 “invoice_info.invoice_value”: 1, “invoice_info.payment_status”: 1 } }
 ])
+````
 ## Slip 12
 #### Q1)
+````
 <!DOCTYPE html>
 <html lang=”en”>
 <head>
@@ -1547,7 +1552,9 @@ Db.order.aggregate([
  </form>
 </body>
 </html>
+````
 #### Q2)
+````
 // Movie Collection
 [
  { “movie_id”: 101, “movie_name”: “Inception”, “budget”: 200000000, “release_year”:
@@ -1578,10 +1585,14 @@ Ledger”, “role”: “Joker” } ] },
 “The Dark Knight” } ] },
  // ... (additional actors)
 ]
+````
 #### a. List the names of movies with the highest budget:
+````
 Db.movie.find({}, { “_id”: 0, “movie_name”: 1, “budget”: 1 }).sort({ “budget”: -1 }).limit(1)
+````
 #### b. Display the details of producers who have produced more than one movie in a
-year:
+#### year:
+````
 Db.producer.aggregate([
  { $unwind: “$produced_movies” },
  { $group: { “_id”: { “producer_name”: “$producer_name”, “release_year”:
@@ -1590,8 +1601,10 @@ Db.producer.aggregate([
  { $project: { “_id”: 0, “producer_name”: “$_id.producer_name”, “release_year”:
 “$_id.release_year”, “count”: 1 } }
 ])
+````
 #### c. List the names of actors who have acted in at least one movie in which ‘Akshay’
-has acted:
+#### has acted:
+````
 Var akshayMovies = db.actor.find({ “acted_movies.actor_name”: “Akshay” }, { “_id”: 0,
 “acted_movies.movie_name”: 1 }).map(function(actor) {
  Return actor.acted_movies.map(function(movie) {
@@ -1600,10 +1613,14 @@ Var akshayMovies = db.actor.find({ “acted_movies.actor_name”: “Akshay” }
 }).flat();
 Db.actor.find({ “acted_movies.movie_name”: { $in: akshayMovies } }, { “_id”: 0,
 “actor_name”: 1 })
+````
 #### d. List the names of movies produced by more than one producer:
+````
 Db.movie.find({ “producers”: { $size: { $gt: 1 } } }, { “_id”: 0, “movie_name”: 1 })
+````
 ## Slip 13
 #### Q1)
+````
 <!DOCTYPE html>
 <html lang=”en”>
 <head>
@@ -1699,7 +1716,9 @@ experience.</p>
  </footer>
 </body>
 </html>
+````
 #### Q2)
+````
 // Competition Collection
 [
  { “competition_id”: 101, “competition_name”: “Coding Challenge”, “category”:
@@ -1720,7 +1739,9 @@ experience.</p>
  { “participation_id”: 302, “student_id”: 202, “competition_id”: 102, “position”: 1 },
  // ... (additional participations)
 ]
+````
 #### a. Display the average number of students participating in each competition:
+````
 Db.participation.aggregate([
  { $group: { “_id”: “$competition_id”, “average_students”: { $avg: 1 } } },
  { $lookup: { from: “competition”, localField: “_id”, foreignField: “competition_id”, as:
@@ -1729,9 +1750,13 @@ Db.participation.aggregate([
  { $project: { “_id”: 0, “competition_name”: “$competition_info.competition_name”,
 “average_students”: 1 } }
 ])
+````
 #### b. Find the number of students for the programming competition:
+````
 Db.participation.count({ “competition_id”: 101 })
+````
 #### c. Display the names of the first three winners of each competition:
+````
 Db.participation.aggregate([
  { $sort: { “position”: 1 } },
  { $group: { “_id”: “$competition_id”, “winners”: { $push: { “student_id”: “$student_id”,
@@ -1742,7 +1767,9 @@ Db.participation.aggregate([
  { $project: { “_id”: 0, “competition_id”: “$_id”, “competition_name”:
 “$winner_info.competition_name”, “winners”: 1 } }
 ])
+````
 #### d. Display students from class ‘FY’ who participated in ‘E-Rangoli’ Competition:
+````
 Db.participation.aggregate([
  { $match: { “competition_id”: 102 } },
  { $lookup: { from: “student”, localField: “student_id”, foreignField: “student_id”, as:
@@ -1752,8 +1779,10 @@ Db.participation.aggregate([
  { $project: { “_id”: 0, “student_name”: “$student_info.student_name”, “class”:
 “$student_info.class” } }
 ])
+````
 ## Slip 14
 #### Q1)
+````
 <!DOCTYPE html>
 <html lang=”en”>
 <head>
@@ -1838,7 +1867,9 @@ server
  </script>
 </body>
 </html>
+````
 #### Q2)
+````
 // Create Scholarships
 CREATE (:Scholarship {name: “Merit Scholarship”})-[:FOR_CATEGORY]->(:Category
 {name: “General”});
@@ -1863,25 +1894,35 @@ CREATE (s)-[:BENEFITS]->(sch);
 // Students recommending others
 MATCH (s1:Student {name: “John Doe”}), (s2:Student {name: “Alice Smith”})
 CREATE (s1)-[:RECOMMENDS]->(s2);
+````
 #### a. List the names of scholarships for the OBC category:
+````
 MATCH (sch:Scholarship)-[:FOR_CATEGORY]->(cat:Category {name: “OBC”})
 RETURN sch.name;
+````
 #### b. Count the number of students benefitted by a specific scholarship in the year
-2020-2021 (assumed from the question context):
+#### 2020-2021 (assumed from the question context):
+````
 MATCH (s:Student)-[:BENEFITS]->(sch:Scholarship {name: “Merit Scholarship”})
 WHERE s.income <= sch.income_limit
 RETURN COUNT(s) AS numberOfStudents;
+````
 #### c. Update the income limit for a specific scholarship:
+````
 MATCH (sch:Scholarship {name: “Merit Scholarship”})
 SET sch.income_limit = 60000;
+````
 #### d. List the most popular scholarship (assumed based on the number of students
-benefitted):
+#### benefitted):
+````
 MATCH (sch:Scholarship)
 RETURN sch.name, SIZE((:Student)-[:BENEFITS]->(sch)) AS popularity
 ORDER BY popularity DESC
 LIMIT 1;
+````
 ## Slip 15
 #### Q1)
+````
 <!DOCTYPE html>
 <html lang=”en”>
 <head>
@@ -1948,7 +1989,9 @@ ipt>
 src=https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js></script>
 </body>
 </html>
+````
 #### Q2)
+````
 // Create Movies
 CREATE (:Movie {title: “Movie1”})-[:BUSINESS]->(:Business {revenue: 1000000});
 CREATE (:Movie {title: “Movie2”})-[:BUSINESS]->(:Business {revenue: 1500000});
@@ -1965,25 +2008,35 @@ MATCH (m:Movie {title: “Movie1”})
 CREATE (m)-[:AWARD_RECEIVED]->(:Award {category: “Best Movie”});
 MATCH (m:Movie {title: “Movie2”})
 CREATE (m)-[:AWARD_RECEIVED]->(:Award {category: “Best Actor”});
+````
 #### a. Find the movie which made the highest business:
+````
 MATCH (m:Movie)-[:BUSINESS]->(b:Business)
 RETURN m.title, b.revenue
 ORDER BY b.revenue DESC
 LIMIT 1;
+````
 #### b. Display details of a movie along with actors:
+````
 MATCH (m:Movie {title: “Movie1”})<-[:ACTED_IN]-(a:Actor)
 RETURN m.title, COLLECT(a.name) AS actors;
+````
 #### c. List all the movies of “Shahrukh Khan”:
+````
 MATCH (a:Actor {name: “Shahrukh Khan”})-[:ACTED_IN]->(m:Movie)
 RETURN m.title;
+````
 #### d. Display all movies having more than 2 awards received:
+````
 MATCH (m:Movie)-[:AWARD_RECEIVED]->(a:Award)
 WITH m, COUNT(a) AS awardCount
 WHERE awardCount > 2
 RETURN m.title, awardCount;
+````
 ## Slip 16
 #### Q1)
 #### Q2)
+````
 // Create Customers
 CREATE (:Customer {name: “John Doe”});
 CREATE (:Customer {name: “Samantha”});
@@ -2014,28 +2067,38 @@ CREATE (ra)-[:FOR]->(r);
 // Create Recommendations
 MATCH (c1:Customer {name: “John Doe”}), (c2:Customer {name: “Samantha”})
 CREATE (c1)-[:RECOMMENDS_TO]->(c2);
+````
 #### a. Count the number of customers who placed an order on “1/1/2023”:
+````
 MATCH (c:Customer)-[:PLACED_ORDER]->(o:Order {orderDate: “1/1/2023”})
 RETURN COUNT(DISTINCT c) AS numberOfCustomers;
+````
 #### b. List the names of customers whose name starts with “S” and place orders using
-Swiggy:
+#### Swiggy:
+````
 MATCH (c:Customer)-[:PLACED_ORDER]->(o:Order)-[:ORDERED_FROM]-
 >(:Restaurant)-[:CONNECTED_TO]->(:Industry {name: “Swiggy”})
 WHERE c.name STARTS WITH “S”
 RETURN DISTINCT c.name;
+````
 #### c. List the names of hotels with a high rating (>=4):
+````
 MATCH (r:Restaurant)
 WHERE r.rating >= 4
 RETURN r.name;
+````
 #### d. List the most recommended hotels in an area (replace “AreaX” with the specific
-area):
+#### area):
+````
 MATCH (c:Customer)-[:RECOMMENDS_TO]->(:Customer)-[:PLACED_ORDER]-
 >(:Order)-[:ORDERED_FROM]->(r:Restaurant {area: “AreaX”})
 RETURN r.name, COUNT(DISTINCT c) AS recommendations
 ORDER BY recommendations DESC
 LIMIT 1;
+````
 ## Slip 17
 #### Q1)
+````
 <!DOCTYPE html>
 <html>
 <head>
@@ -2068,7 +2131,9 @@ LIMIT 1;
 </div>
 </body>
 </html>
+````
 #### Q2)
+````
 // Create Authors
 CREATE (:Author {name: “Author1”});
 CREATE (:Author {name: “Author2”});
@@ -2096,25 +2161,35 @@ MATCH (r:Reader {name: “Reader1”}), (b:Book {title: “Comics”})
 CREATE (r)-[:RECOMMENDED]->(b);
 MATCH (r:Reader {name: “Reader2”}), (b:Book {title: “Mystery”})
 CREATE (r)-[:REVIEWED]->(:Review {rating: 4});
+````
 #### a. List the names of authors who wrote “Comics”:
+````
 MATCH (a:Author)-[:WROTE]->(b:Book {title: “Comics”})
 RETURN DISTINCT a.name;
+````
 #### b. Count the number of readers of a specific book published by “Sage” (replace
-“BookTitle” with the specific book title):
+#### “BookTitle” with the specific book title):
+````
 MATCH (p:Publisher {name: “Sage”})<-[:PUBLISHED]-(b:Book {title: “BookTitle”})<-
 [:READ]-(r:Reader)
 RETURN COUNT(DISTINCT r) AS numberOfReaders;
+````
 #### c. List all the publishers whose name starts with “N”:
+````
 MATCH (p:Publisher)
 WHERE p.name STARTS WITH “N”
 RETURN p.name;
+````
 #### d. List the names of people who have given a rating of (>=3) for a specific book
-(replace “BookTitle” with the specific book title):
+#### (replace “BookTitle” with the specific book title):
+````
 MATCH (r:Reader)-[:REVIEWED]->(rev:Review {rating: 3})-[:OF_BOOK]->(b:Book {title:
 “BookTitle”})
 RETURN DISTINCT r.name;
+````
 ## Slip 18
 #### Q1)
+````
 <!DOCTYPE html>
 <html lang=”en”>
 <head>
@@ -2153,7 +2228,9 @@ width=”200”>
  </script>
 </body>
 </html>
+````
 #### Q2)
+````
 // Create Doctors
 CREATE (:Doctor {name: “Dr. Smith”})-[:SPECIALIZED_IN]->(:Specialization {name:
 “Orthopedic”});
@@ -2172,29 +2249,39 @@ CREATE (:Person {name: “Person1”})-[:RECOMMENDED]->(d:Doctor {name: “Dr.
 Smith”});
 CREATE (:Person {name: “Person2”})-[:REVIEWED]->(:Review {comment: “Good
 experience”, rating: 4})-[:OF_DOCTOR]->(d:Doctor {name: “Dr. Patel”});
+````
 #### a. List the Orthopedic doctors in a specific area (replace “AreaX” with the specific
-area):
+#### area):
+````
 MATCH (d:Doctor)-[:SPECIALIZED_IN]->(:Specialization {name: “Orthopedic”})-
 [:WORKS_IN]->(h:Hospital {area: “AreaX”})
 RETURN DISTINCT d.name;
+````
 #### b. List the doctors who specialize in a specific field (replace “SpecializationName”
-with the specific specialization):
+#### with the specific specialization):
+````
 MATCH (d:Doctor)-[:SPECIALIZED_IN]->(:Specialization {name: “SpecializationName”})
 RETURN DISTINCT d.name;
+````
 #### c. List the most recommended Pediatrics in a specific hospital (replace
-“HospitalName” with the specific hospital):
+#### “HospitalName” with the specific hospital):
+````
 MATCH (d:Doctor)-[:SPECIALIZED_IN]->(:Specialization {name: “Pediatrics”})-
 [:WORKS_IN]->(h:Hospital {name: “HospitalName”})
 RETURN d.name, COUNT(()-[:RECOMMENDED]->(d)) AS recommendations
 ORDER BY recommendations DESC
 LIMIT 1;
+````
 #### d. List all doctors who visit more than 2 hospitals:
+````
 MATCH (d:Doctor)-[:WORKS_IN]->(h:Hospital)
 WITH d, COUNT(DISTINCT h) AS hospitalCount
 WHERE hospitalCount > 2
 RETURN d.name;
+````
 ## Slip 19
 #### Q1)
+````
 <!DOCTYPE html>
 <html lang=”en”>
 <head>
@@ -2253,7 +2340,9 @@ RETURN d.name;
  </script>
 </body>
 </html>
+````
 #### Q2)
+````
 // Create Manufacturers
 CREATE (:Manufacturer {name: “DELL”});
 CREATE (:Manufacturer {name: “HP”});
@@ -2274,26 +2363,36 @@ CREATE (c)-[:RECOMMENDS]->(:Recommendation)-[:OF_LAPTOP]->(l);
 MATCH (c:Customer {name: “John Doe”}), (l:Laptop {model: “Inspiron”})
 CREATE (c)-[:REVIEWED]->(:Review {comment: “Great laptop”, rating: 4})-
 [:OF_LAPTOP]->(l);
+````
 #### a. List the characteristics of a specific laptop (replace “LaptopModel” with the
-specific laptop model):
+#### specific laptop model):
+````
 MATCH (l:Laptop {model: “LaptopModel”})
 RETURN l.characteristics;
+````
 #### b. List the names of customers who bought a “DELL” laptop:
+````
 MATCH (c:Customer)-[:BOUGHT]->(:Purchase)-[:OF_LAPTOP]->(:Laptop)-
 [:PRODUCES]->(:Manufacturer {name: “DELL”})
 RETURN DISTINCT c.name;
+````
 #### c. List the customers who purchased a device on a specific date (replace
-“26/01/2023” with the specific date):
+#### “26/01/2023” with the specific date):
+````
 MATCH (c:Customer)-[:BOUGHT]->(p:Purchase {purchaseDate: “26/01/2023”})
 RETURN DISTINCT c.name;
+````
 #### d. List the most recommended device:
+````
 MATCH (l:Laptop)<-[:OF_LAPTOP]-(:Recommendation)<-[:RECOMMENDS]-(:Customer)
 RETURN l.model, COUNT(DISTINCT (:Customer)-[:RECOMMENDS]-
 >(:Recommendation)-[:OF_LAPTOP]->(l)) AS recommendations
 ORDER BY recommendations DESC
 LIMIT 1;
+````
 ## Slip 20
 #### Q1)
+````
 <!DOCTYPE html>
 <html lang=”en”>
 <head>
@@ -2342,7 +2441,9 @@ LIMIT 1;
  </div>
 </body>
 </html>
+````
 #### Q2)
+````
 // Create Nursery and Items
 CREATE (:Nursery {name: “GreenGarden”})-[:HAS_PLANT]->(:Plant {name: “Rose”, type:
 “Flowering”, quantity: 1000})
@@ -2371,25 +2472,35 @@ CREATE (c)-[:USES_APP]->(a)
 MATCH (c:Customer {name: “Jane Smith”}), (a:App {name: “NurseryApp”})
 CREATE (c)-[:RECOMMENDS]->(:Recommendation {comment: “Great app”, rating: 5})-
 [:OF_APP]->(a)
+````
 #### a. List the types of plants from your graph model:
+````
 MATCH (p:Plant)
 RETURN DISTINCT p.type;
+````
 #### b. List the popular flowering plants:
+````
 MATCH (p:Plant {type: “Flowering”})
 RETURN p.name, p.quantity
 ORDER BY p.quantity DESC
 LIMIT 5;
+````
 #### c. List the names of plants sold where qty > 500 in the last 2 days:
+````
 MATCH (p:Plant)-[:OF_PLANT]->(purchase:Purchase)
 WHERE p.quantity > 500 AND purchase.purchaseDate >= date(“2023-02-09”)
 RETURN DISTINCT p.name;
+````
 #### d. List the names of suppliers in decreasing order who supplies “Creepers”:
+````
 MATCH (n:Nursery)-[:HAS_PLANT]->(p:Plant {name: “Creeper”})<-[:OF_PLANT]-
 (purchase:Purchase)-[:MADE_PURCHASE]->(customer:Customer)
 RETURN n.name, COUNT(DISTINCT customer) AS supplierCount
 ORDER BY supplierCount DESC;
+````
 ## Slip 21
 #### Q1)
+````
 <!DOCTYPE html>
 <html lang=”en”>
 <head>
@@ -2493,7 +2604,9 @@ appropriate logic)
  </script>
 </body>
 </html>
+````
 #### Q2)
+````
 // Create Brands
 CREATE (:Brand {name: “Dr. Reddy”});
 CREATE (:Brand {name: “Cipla”});
@@ -2516,23 +2629,33 @@ MATCH (m:Medicine {name: “Medicine2”})-[:BELONGS_TO]->(:ProductType {name:
 “Syrup”})
 MATCH (m:Medicine {name: “Medicine3”})-[:BELONGS_TO]->(:ProductType {name:
 “Powder”})
+````
 #### a. List the names of different medicines considered in your graph:
+````
 MATCH (m:Medicine)
 RETURN DISTINCT m.name;
+````
 #### b. List the medicines that are highly used in Rajasthan:
+````
 MATCH (m:Medicine)-[u:USES]->(s:State {name: “Rajasthan”})
 WHERE u.usePercentage >= 90
 RETURN m.name;
+````
 #### c. List the highly used tablets in Gujarat:
+````
 MATCH (m:Medicine)-[u:USES]->(s:State {name: “Gujarat”})-[:BELONGS_TO]-
 >(:ProductType {name: “Tablet”})
 WHERE u.usePercentage >= 90
 RETURN m.name;
+````
 #### d. List the medicine names manufacturing “Powder”:
+````
 MATCH (m:Medicine)-[:BELONGS_TO]->(p:ProductType {name: “Powder”})
 RETURN DISTINCT m.name;
+````
 ## Slip 22
 #### Q1)
+````
 <!DOCTYPE html>
 <html lang=”en”>
 <head>
@@ -2593,7 +2716,9 @@ reaches the container’s width limit.</h2>
  </div>
 </body>
 </html>
+````
 #### Q2)
+````
 // Create Car Showroom and Models
 CREATE (:CarShowroom {name: “XYZ Showroom”})-[:HAS_MODEL]->(:CarModel {name:
 “Honda City”})
@@ -2623,24 +2748,34 @@ CREATE (:Customer {name: “Alice”})-[:MADE_PURCHASE]->(:Purchase {details:
 MATCH (c:Customer {name: “John Doe”})-[:MADE_PURCHASE]->(p:Purchase)-
 [:OF_MODEL]->(m:CarModel {name: “Honda City”})
 MERGE (c)-[:ENQUIRED_ABOUT]->(:Enquiry {details: “Interested in Honda City”})
+````
 #### a. List the types of cars available in the showroom:
+````
 MATCH (s:CarShowroom)-[:HAS_MODEL]->(m:CarModel)
 RETURN DISTINCT m.name;
+````
 #### b. List the sections handled by Mr. Narayan:
+````
 MATCH (s:SalesStaff {name: “Mr. Narayan”})-[:HANDLES_SECTION]->(sec:Section)
 RETURN DISTINCT sec.name;
+````
 #### c. List the names of customers who have done only enquiry but not made any
-purchase:
+#### purchase:
+````
 MATCH (c:Customer)-[:ENQUIRED_ABOUT]->(e:Enquiry)
 WHERE NOT (c)-[:MADE_PURCHASE]->(:Purchase)
 RETURN DISTINCT c.name;
+````
 #### d. List the highly sale car model:
+````
 MATCH (m:CarModel)<-[:OF_MODEL]-(p:Purchase)
 RETURN m.name, COUNT(p) AS purchaseCount
 ORDER BY purchaseCount DESC
 LIMIT 1;
+````
 ## Slip 23
 #### Q1)
+````
 <!DOCTYPE html>
 <html lang=”en”>
 <head>
@@ -2714,7 +2849,9 @@ LIMIT 1;
  </script>
 </body>
 </html>
+````
 #### Q2)
+````
 // Create Automobile Industry and Vehicle Types
 CREATE (:AutomobileIndustry {name: “XYZ Automobiles”})-[:MANUFACTURES]-
 >(:VehicleType {name: “Two-Wheeler”, characteristics: “Characteristic 1, Characteristic
@@ -2736,23 +2873,33 @@ CREATE (:Customer {name: “David”})-[:RECOMMENDS]->(:VehicleType {name: “El
 Vehicle”})
 CREATE (:Customer {name: “Eva”})-[:BOUGHT]->(:VehicleType {name: “Two-Wheeler”})
 CREATE (:Customer {name: “Frank”})-[:BOUGHT]->(:VehicleType {name: “FourWheeler”})
+````
 #### a. List the characteristics of four-wheeler types:
+````
 MATCH (:VehicleType {name: “Four-Wheeler”}) RETURN DISTINCT characteristics;
+````
 #### b. List the names of customers who bought a two-wheeler vehicle:
+````
 MATCH (c:Customer)-[:BOUGHT]->(:VehicleType {name: “Two-Wheeler”}) RETURN
 DISTINCT c.name;
+````
 #### c. List the customers who bought more than one type of vehicle:
+````
 MATCH (c:Customer)-[:BOUGHT]->(vt:VehicleType)
 WITH c, COLLECT(DISTINCT vt) AS vehicleTypes
 WHERE SIZE(vehicleTypes) > 1
 RETURN DISTINCT c.name;
+````
 #### d. List the most recommended vehicle type:
+````
 MATCH (vt:VehicleType)<-[:RECOMMENDS]-(c:Customer)
 RETURN vt.name, COUNT(c) AS recommendationCount
 ORDER BY recommendationCount DESC
 LIMIT 1;
+````
 ## Slip 24
 #### Q1)
+````
 <!DOCTYPE html>
 <html>
 <head>
@@ -2777,7 +2924,9 @@ LIMIT 1;
  </form>
 </body>
 </html>
+````
 #### Q2)
+````
 // Create Library and Book Types
 CREATE (:Library {name: “University Library”})-[:HAS_TYPE]->(:BookType {name: “Text”})
 CREATE (:Library {name: “University Library”})-[:HAS_TYPE]->(:BookType {name:
@@ -2795,24 +2944,34 @@ CREATE (:Student {name: “David”})-[:RECOMMENDS]->(:BookType {name:
 “Bibliography”})
 CREATE (:Student {name: “Eva”})-[:BOUGHT]->(:BookType {name: “Text”})
 CREATE (:Student {name: “Frank”})-[:BOUGHT]->(:BookType {name: “Reference”})
+````
 #### a. List the books of type “text”:
+````
 MATCH (b:BookType {name: “Text”}) RETURN b;
+````
 #### b. List the name of the student who bought text and reference types of books:
+````
 MATCH (s:Student)-[:BOUGHT]->(b:BookType)
 WHERE b.name IN [“Text”, “Reference”]
 RETURN DISTINCT s.name;
+````
 #### c. List the most recommended book type:
+````
 MATCH (b:BookType)<-[:RECOMMENDS]-(s:Student)
 RETURN b.name, COUNT(s) AS recommendationCount
 ORDER BY recommendationCount DESC
 LIMIT 1;
+````
 #### d. List the student who bought more than one type of book:
+````
 MATCH (s:Student)-[:BOUGHT]->(b:BookType)
 WITH s, COLLECT(DISTINCT b) AS bookTypes
 WHERE SIZE(bookTypes) > 1
 RETURN DISTINCT s.name;
+````
 ## Slip 25
 #### Q1)
+````
 <!DOCTYPE html>
 <html>
 <head>
@@ -2882,7 +3041,9 @@ RETURN DISTINCT s.name;
  </div>
 </body>
 </html>
+````
 #### Q2)
+````
 // Create Departments
 CREATE (:Department {name: ‘Physics’})
 CREATE (:Department {name: ‘Geography’})
@@ -2906,23 +3067,31 @@ CREATE (:Person {name: ‘John’})-[:RECOMMENDS]->(:Course {name: ‘Geography 
 CREATE (:Person {name: ‘Alice’})-[:RECOMMENDS]->(:Course {name: ‘Computer
 Science 301’})
 // Add more recommendations as needed
+````
 #### a. List the details of all the departments in the university.
+````
 MATCH (d:Department)
 RETURN d;
+````
 #### b. List the names of the courses provided by the Physics department.
+````
 MATCH (:Department {name: ‘Physics’})-[:OFFERS]->(course:Course)
 RETURN course.name;
+````
 #### c. List the most recommended course in the Geography department.
+````
 MATCH (:Department {name: ‘Geography’})-[:OFFERS]->(course:Course)<-
 [:RECOMMENDS]-(person:Person)
 RETURN course.name, COUNT(person) AS recommendations
 ORDER BY recommendations DESC
 LIMIT 1;
+````
 #### d. List the names of common courses across Mathematics and Computer
-department.
+#### department.
+````
 MATCH (mathDept:Department {name: ‘Mathematics’})-[:OFFERS]-
 >(mathCourse:Course),
  (compDept:Department {name: ‘Computer’})-[:OFFERS]->(compCourse:Course)
 WHERE mathCourse.name = compCourse.name
 RETURN mathCourse.name;
-
+````
