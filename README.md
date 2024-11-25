@@ -174,6 +174,46 @@ Db.property.find({ rate: { $lt: 100000 } }, { _id: 0, area: 1 })
 </html>
 ````
 #### Q2)
+````
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+Body
+{ font-family: Arial, sans-serif; }
+ H1 {
+ Font-size: 6pt;
+ Color: black;
+ }
+ Form {
+ Background-color: lightblue;
+ }
+</style>
+</head>
+<body>
+<h1><b>Project Management</b></h1>
+<form action=””> <label for=”projectname”>Project Name:</label>
+<input type=”text” id=”projectname” name=”projectname”><br><br>
+<label for=”assignedto”>Assigned to:</label>
+<input type=”text” id=”assignedto” name=”assignedto”><br><br>
+<label for=”startdate”>Start Date:</label>
+<input type=”date” id=”startdate” name=”startdate”><br><br>
+<label for=”enddate”>End Date:</label>
+<input type=”date” id=”enddate” name=”enddate”><br><br>
+<label for=”priority”>Priority:</label>
+<select id=”priority” name=”priority”>
+ <option value=”high”>High</option>
+ <option value=”average”>Average</option>
+ <option value=”low”>Low</option>
+</select><br><br>
+<label for=”description”>Description:</label>
+<textarea id=”description” name=”description” rows=”4”
+cols=”50”></textarea><br><br>
+<input type=”submit” value=”Submit”>
+<input type=”submit” value=”clear”>
+</form>
+</body>
+</html>
 // Newspaper Collection
 [
  {
@@ -278,15 +318,20 @@ Db.newspaper.find({ city: “Nashik” })
 Db.newspaper.find({ language: “Marathi” })
 ````
 #### c. Count the number of publishers in “Gujarat” state:
+````
 Db.publisher.find({ _id: { $in: db.newspaper.distinct(“publisher_id”, { “city”:
 “Ahmedabad” }) } }).count()
+````
 #### d. Write a cursor to show newspapers with the highest sale in Maharashtra state:
+````
 Var cursor = db.newspaper.find({ state: “Maharashtra” }).sort({ sale_count: -1 });
 While (cursor.hasNext()) {
  Printjson(cursor.next());
 }
+````
 ## Slip 3
 #### Q1)
+````
 <!DOCTYPE html>
 <html lang=”en”>
 <head>
@@ -341,7 +386,9 @@ ipt>
 src=https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js></script>
 </body>
 </html>
+````
 #### Q2)
+````
 // Employee Collection
 [
  {
@@ -398,11 +445,17 @@ src=https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js></scr
  “employees”: 0
  }
 ]
+````
 #### a. Display the name of the employee who has the highest salary:
+````
 Db.employee.find().sort({ salary: -1 }).limit(1).project({ _id: 0, name: 1 })
+````
 #### b. Display the biggest department with the maximum number of employees:
+````
 Db.department.find().sort({ employees: -1 }).limit(1)
+````
 #### c. Write a cursor which shows department-wise employee information:
+````
 Var cursor = db.department.find();
 While (cursor.hasNext()) {
  Var department = cursor.next();
@@ -413,11 +466,15 @@ While (cursor.hasNext()) {
  }
  Print(“------------“);
 }
+````
 #### d. List all the employees who work in the Sales department and have a salary
+````
 greater than 50000:
 Db.employee.find({ department_id: 101, salary: { $gt: 50000 } })
+````
 ## Slip 4
 #### Q1)
+````
 <!DOCTYPE html>
 <html lang=”en”>
 <head>
@@ -463,7 +520,9 @@ Db.employee.find({ department_id: 101, salary: { $gt: 50000 } })
  <script src=”path/to/bootstrap.bundle.min.js”></script>
 </body>
 </html>
+````
 #### Q2)
+````
 // Hospital Collection
 [
  {
@@ -519,18 +578,28 @@ Db.employee.find({ department_id: 101, salary: { $gt: 50000 } })
  },
  // ... (additional doctors)
 ]
+````
 #### a. List the names of hospitals with a particular specialization (e.g., Orthopedic):
+````
 Db.hospital.find({ specializations: “Orthopedic” }, { _id: 0, name: 1 })
+````
 #### b. List the names of all hospitals located in a specific city (e.g., Nashik):
+````
 Db.hospital.find({ city: “Nashik” }, { _id: 0, name: 1 })
+````
 #### c. List the names of hospitals where Dr. Deshmukh visits:
+````
 Var hospitalsVisited = db.doctor_service.findOne({ doctor_name: “Dr. Deshmukh”
 }).hospitals_served;
 Db.hospital.find({ hospital_id: { $in: hospitalsVisited } }, { _id: 0, name: 1 })
+````
 #### d. List the names of hospitals whose rating is greater than or equal to 4:
+````
 Db.hospital.find({ rating: { $gte: 4 } }, { _id: 0, name: 1 })
+````
 ## Slip 5
 #### Q1)
+````
 <!DOCTYPE html>
 <html lang=”en”>
 <head>
@@ -589,7 +658,9 @@ Db.hospital.find({ rating: { $gte: 4 } }, { _id: 0, name: 1 })
 </table>
 </body>
 </html>
+````
 #### Q2)
+````
 // Project Collection
 [
  {
@@ -651,18 +722,28 @@ Db.hospital.find({ rating: { $gte: 4 } }, { _id: 0, name: 1 })
  “projects_working_on”: [2, 5]
  }
 ]
+````
 #### a. List all names of projects where Project_type = “Marketing”:
+````
 Db.project.find({ project_type: “Marketing” }, { _id: 0, project_name: 1 })
+````
 #### b. List all the projects with a duration greater than 3 months:
+````
 Db.project.find({ duration_months: { $gt: 3 } })
+````
 #### c. Count the number of employees working on the “Sales Automation” project:
+````
 Db.employee.find({ projects_working_on: 1 }).count()
+````
 #### d. List the names of projects on which Mr. Patil is working:
+````
 Var projectsWorkingOn = db.employee.findOne({ employee_name: “Mr. Patil”
 }).projects_working_on;
 Db.project.find({ project_id: { $in: projectsWorkingOn } }, { _id: 0, project_name: 1 })
+````
 ## Slip 6
 #### Q1)
+````
 <!DOCTYPE html>
 <html lang=”en”>
 <head>
@@ -771,7 +852,9 @@ eget nisi consequat feugiat.</p>
  </table>
 </body>
 </html>
+````
 #### Q2)
+````
 // Customer Collection
 [
  {
@@ -817,9 +900,13 @@ eget nisi consequat feugiat.</p>
  },
  // ... (additional policies)
 ]
+````
 #### a. List the details of customers who have taken the “Komal Jeevan” policy:
+````
 Db.customer.find({ “policies_taken.policy_type”: “Komal Jeevan” })
+````
 #### b. Display the average premium amount:
+````
 Var totalPremium = 0;
 Var totalCustomers = db.customer.count();
 Db.customer.find().forEach(function(customer) {
@@ -829,16 +916,22 @@ Db.customer.find().forEach(function(customer) {
 });
 Var averagePremium = totalPremium / totalCustomers;
 Print(“Average Premium Amount: “ + averagePremium);
+````
 #### c. Increase the premium amount by 5% for policy type “Monthly”:
+````
 Db.policy.update(
  { “premium_frequency”: “Monthly” },
  { $mul: { “premium_amount”: 1.05 } },
  { multi: true }
 )
+````
 #### d. Count the number of customers who have taken a policy type “Half Yearly”:
+````
 Db.customer.find({ “policies_taken.policy_type”: “Half Yearly” }).count()
+````
 Slip 7
 #### Q1)
+````
 <!DOCTYPE html>
 <html lang=”en”>
 <head>
@@ -871,7 +964,9 @@ Slip 7
  <div class=”three-d-text”>Hover me!</div>
 </body>
 </html>
+````
 #### Q2)
+````
 // Customer Collection
 [
  {
@@ -908,20 +1003,30 @@ Slip 7
 “Withdrawal”, “date”: “2022-02-20” },
  // ... (additional transactions)
 ]
+````
 #### a. List names of all customers whose first name starts with an “S”:
+````
 Db.customer.find({ “first_name”: /^S/i }, { “_id”: 0, “first_name”: 1, “last_name”: 1 })
+````
 #### b. List all customers who have opened an account on 1/1/2020 in the “Main”
+````
 branch:
 Db.customer.find({ “accounts.open_date”: “2020-01-01”, “accounts.branch”: “Main” }, {
 “_id”: 0, “first_name”: 1, “last_name”: 1 })
+````
 #### c. List the names of customers where acctype is “Savings”:
+````
 Db.customer.find({ “accounts.account_type”: “Savings” }, { “_id”: 0, “first_name”: 1,
 “last_name”: 1 })
+````
 #### d. Count the total number of loan account holders in the “Downtown” branch:
+````
 Db.customer.find({ “accounts.account_type”: “Loan”, “accounts.branch”: “Downtown”
 }).count()
+````
 ## Slip 8
 #### Q1)
+````
 <!DOCTYPE html>
 <html lang=”en”>
 <head>
@@ -950,7 +1055,9 @@ Db.customer.find({ “accounts.account_type”: “Loan”, “accounts.branch�
  <script src=”path/to/bootstrap.bundle.min.js”></script>
 </body>
 </html>
+````
 #### Q2)
+````
 // Item Collection
 [
  { “item_id”: 101, “item_name”: “Laptop”, “tags”: [“Electronics”, “Gadgets”], “status”:
@@ -970,24 +1077,34 @@ Db.customer.find({ “accounts.account_type”: “Loan”, “accounts.branch�
  { “warehouse_id”: 3, “warehouse_name”: “Backup Warehouse”, “items_stock”: [{
 “item_id”: 104, “quantity”: 250 }, { “item_id”: 103, “quantity”: 10 }] }
 ]
+````
 #### a. List all the items where quantity is greater than 300:
+````
 Db.warehouse.find({ “items_stock.quantity”: { $gt: 300 } })
+````
 #### b. List all items which have tags less than 5:
+````
 Db.item.find({ “tags”: { $exists: true, $size: { $lt: 5 } } })
+````
 #### c. List all items having status equal to “B” or having quantity less than 50 and height
-of the product should be greater than 8:
+#### of the product should be greater than 8:
+````
 Db.item.find({
  $or: [
  { “status”: “B” },
  { $and: [{ “quantity”: { $lt: 50 } }, { “height”: { $gt: 8 } }] }
  ]
 })
+````
 #### d. Find all warehouses that keep the item “Planner” and have in-stock quantity less
-than 20:
+#### than 20:
+````
 Db.warehouse.find({ “items_stock”: { $elemMatch: { “item_id”: 103, “quantity”: { $lt: 20 }
 } } })
+````
 ## Slip 9
 #### Q1)
+````
 <!DOCTYPE html>
 <html lang=”en”>
 <head>
@@ -1061,7 +1178,9 @@ Db.warehouse.find({ “items_stock”: { $elemMatch: { “item_id”: 103, “qu
  </form>
 </body>
 </html>
+````
 #### Q2)
+````
 // Customer Collection
 [
  { “customer_id”: 101, “customer_name”: “John Doe”, “address”: “Main St, Pune” },
@@ -1079,12 +1198,18 @@ Db.warehouse.find({ “items_stock”: { $elemMatch: { “item_id”: 103, “qu
 “loan_amt”: 120000 },
  // ... (additional loans)
 ]
+````
 #### a. List all customers whose name starts with ‘D’ character:
+````
 Db.customer.find({ “customer_name”: /^D/i })
+````
 #### b. List the names of customers in descending order who have taken a loan from
-Pimpri city:
+#### Pimpri city:
+````
 Db.customer.find({ “address”: /Pimpri/i }).sort({ “customer_name”: -1 })
+````
 #### c. Display customer details having the maximum loan amount:
+````
 Var maxLoanAmount = db.loan.find().sort({ “loan_amt”: -1 }).limit(1).next().loan_amt;
 Db.loan.aggregate([
  { $match: { “loan_amt”: maxLoanAmount } },
@@ -1094,16 +1219,20 @@ as: “customer_info” } },
  { $project: { “customer_info.customer_id”: 1, “customer_info.customer_name”: 1,
 “customer_info.address”: 1, “loan_type”: 1, “loan_amt”: 1 } }
 ])
+````
 #### d. Update the address of the customer whose name is “Mr. Patil” and loan_amt is
-greater than 100000:
+#### greater than 100000:
+````
 Db.customer.update(
  { “customer_name”: “Mr. Patil”, “customer_id”: { $in: db.loan.find({ “loan_amt”: { $gt:
 100000 } }).distinct(“customer_id”) } },
  { $set: { “address”: “New Address” } },
  { multi: true }
 )
+````
 ## Slip 10
 #### Q1
+````
 <!DOCTYPE html>
 <html lang=”en”>
 <head>
@@ -1142,7 +1271,9 @@ Db.customer.update(
  <button>Hover Me</button>
 </body>
 </html>
+````
 #### Q2)
+````
 // Product Collection
 [
  { “product_id”: 101, “product_name”: “Laptop”, “brand”: “Dell”, “warranty_period”: “1
@@ -1170,9 +1301,13 @@ year”, “rating”: 4.5 },
 08-15”, “bill_amount”: 150 },
  // ... (additional purchases)
 ]
+````
 #### a. List the names of products whose warranty period is one year:
+````
 Db.product.find({ “warranty_period”: “1 year” }, { “_id”: 0, “product_name”: 1 })
+````
 #### b. List the customers who have made a purchase on “15/08/2023”:
+````
 Db.purchase.aggregate([
  { $match: { “purchase_date”: “2023-08-15” } },
  { $lookup: { from: “customer”, localField: “customer_id”, foreignField: “customer_id”,
@@ -1181,11 +1316,15 @@ as: “customer_info” } },
  { $project: { “customer_info.customer_id”: 1, “customer_info.customer_name”: 1,
 “customer_info.city”: 1 } }
 ])
+````
 #### c. Display the names of products with the brand that has the highest rating:
+````
 Var maxRating = db.product.find().sort({ “rating”: -1 }).limit(1).next().rating;
 Db.product.find({ “rating”: maxRating }, { “_id”: 0, “product_name”: 1, “brand”: 1 })
+````
 #### d. Display customers who stay in a specific city and have a bill amount greater than
-50000:
+#### 50000:
+````
 Db.purchase.aggregate([
  { $match: { “bill_amount”: { $gt: 50000 } } },
  { $lookup: { from: “customer”, localField: “customer_id”, foreignField: “customer_id”,
@@ -1195,8 +1334,10 @@ as: “customer_info” } },
  { $project: { “customer_info.customer_id”: 1, “customer_info.customer_name”: 1,
 “customer_info.city”: 1 } }
 ])
+````
 ## Slip 11
 #### Q1)
+````
 <!DOCTYPE html>
 <html lang=”en”>
 <head>
@@ -1275,7 +1416,9 @@ information from the server
  </script>
 </body>
 </html>
+````
 #### Q2)
+````
 // Product Collection
 [
  { “product_id”: 101, “product_name”: “Laptop”, “price”: 1000 },
@@ -1303,11 +1446,16 @@ information from the server
  { “invoice_id”: 401, “order_id”: 301, “invoice_value”: 2500, “payment_status”: “Paid” },
  // ... (additional invoices)
 ]
+````
 #### a. List all products in the inventory:
+````
 Db.product.find({})
+````
 #### b. List the details of orders with a value >20000:
 #### c. List all the orders which have not been processed (invoice not generated):
+````
 Db.order.find({ “processed”: false })
+````
 #### d. List all the orders along with their invoice for “Mr. Rajiv”:
 Db.order.aggregate([
  { $match: { “customer_id”: 203 } },
